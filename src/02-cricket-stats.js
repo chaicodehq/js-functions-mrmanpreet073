@@ -7,9 +7,7 @@
  *
  * Functions (sab arrow functions honge):
  *
- *   1. calcStrikeRate(runs, balls)
- *      - Strike rate = (runs / balls) * 100, rounded to 2 decimal places
- *      - Agar balls <= 0 ya runs < 0, return 0
+
  *
  *   2. calcEconomy(runsConceded, overs)
  *      - Economy = runsConceded / overs, rounded to 2 decimal places
@@ -37,22 +35,71 @@
  *   getPlayerCard({ name: "Jadeja", runs: 35, balls: 20, totalRuns: 2000, innings: 80, notOuts: 10, runsConceded: 1500, overs: 200 })
  *   // => { name: "Jadeja", strikeRate: 175, economy: 7.5, battingAvg: 28.57, isAllRounder: false }
  */
+
+//  * 1. calcStrikeRate(runs, balls)
+//  *    - Strike rate = (runs / balls) * 100, rounded to 2 decimal places
+//  *    - Agar balls <= 0 ya runs < 0, return 0
+// 1️⃣ Strike Rate
 export const calcStrikeRate = (runs, balls) => {
-  // Your code here
+
+  if (balls <= 0 || runs < 0) {
+    return 0;
+  }
+
+  let result = Number(((runs / balls) * 100).toFixed(2));
+  return result;
 };
+
 
 export const calcEconomy = (runsConceded, overs) => {
-  // Your code here
+
+  if (overs <= 0 || runsConceded < 0) {
+    return 0;
+  }
+
+  let result = Number((runsConceded / overs).toFixed(2));
+  return result;
 };
+
 
 export const calcBattingAvg = (totalRuns, innings, notOuts = 0) => {
-  // Your code here
+
+  if (innings - notOuts <= 0) {
+    return 0;
+  }
+
+  let result = Number((totalRuns / (innings - notOuts)).toFixed(2));
+  return result;
 };
+
 
 export const isAllRounder = (battingAvg, economy) => {
-  // Your code here
+
+  if (battingAvg > 30 && economy < 8) {
+    return true;
+  }
+
+  return false;
 };
 
+
 export const getPlayerCard = (player) => {
-  // Your code here
+
+  if (!player || !player.name) {
+    return null;
+  }
+
+  const strikeRate = calcStrikeRate(player.runs, player.balls);
+  const economy = calcEconomy(player.runsConceded, player.overs);
+  const battingAvg = calcBattingAvg(player.totalRuns, player.innings, player.notOuts);
+
+  const allRounder = isAllRounder(battingAvg, economy);
+
+  return {
+    name: player.name,
+    strikeRate,
+    economy,
+    battingAvg,
+    isAllRounder: allRounder
+  };
 };
